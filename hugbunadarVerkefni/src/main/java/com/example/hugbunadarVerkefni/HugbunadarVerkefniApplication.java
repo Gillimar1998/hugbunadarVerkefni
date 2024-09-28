@@ -9,6 +9,7 @@ public class HugbunadarVerkefniApplication {
 	public static void main(String[] args) {
 
 		Login loginSystem = new Login();
+		Users usersSystem = new Users();
 
 		String testUser = "Admin";
 		String testPassword ="Admin123";
@@ -27,6 +28,19 @@ public class HugbunadarVerkefniApplication {
 		} else {
 			System.out.println("Fail Login failed. Invalid username or password.");
 		}
+		if (usersSystem.getUser(testUser) == testUser) {
+			System.out.println("virkar");
+		} else {
+			System.out.println("virkar ekki");
+		}
+
+		if (usersSystem.getUser(testFailUser) == testUser) {
+			System.out.println("virkar ekki");
+		} else {
+			System.out.println("virkar");
+		}
+
+
 
 
 		SpringApplication.run(HugbunadarVerkefniApplication.class, args);
