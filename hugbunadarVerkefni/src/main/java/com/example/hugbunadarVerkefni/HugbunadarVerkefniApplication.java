@@ -7,6 +7,28 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HugbunadarVerkefniApplication {
 
 	public static void main(String[] args) {
+
+		Login loginSystem = new Login();
+
+		String testUser = "Admin";
+		String testPassword ="Admin123";
+
+		String testFailUser = "Admin";
+		String testFailPassword ="dmin123";
+
+		if (loginSystem.validateLogin(testUser, testPassword)) {
+			System.out.println("Login successful! Welcome, " + testUser);
+		} else {
+			System.out.println("Login failed. Invalid username or password.");
+		}
+
+		if (loginSystem.validateLogin(testFailUser, testFailPassword)) {
+			System.out.println("Fail Login successful! Welcome, " + testFailUser);
+		} else {
+			System.out.println("Fail Login failed. Invalid username or password.");
+		}
+
+
 		SpringApplication.run(HugbunadarVerkefniApplication.class, args);
 	}
 
