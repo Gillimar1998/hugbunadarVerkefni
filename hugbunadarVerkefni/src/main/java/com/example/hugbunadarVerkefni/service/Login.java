@@ -1,4 +1,4 @@
-package com.example.hugbunadarVerkefni;
+package com.example.hugbunadarVerkefni.service;
 
 import java.util.HashMap;
 
