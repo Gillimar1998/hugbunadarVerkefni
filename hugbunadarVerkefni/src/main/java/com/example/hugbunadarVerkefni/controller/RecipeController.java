@@ -27,7 +27,7 @@ public class RecipeController {
 
 
     @GetMapping("/{id}")  // HTTP GET method með path variable
-    public Recipe getRecipe(@PathVariable int id) {
+    public Recipe getRecipe(@PathVariable long id) {
         return recipeService.getRecipe(id);  // Köllum á service layer til að fá recipe eftir ID
     }
 
@@ -36,4 +36,5 @@ public class RecipeController {
     public Recipe setRecipe(@RequestBody Recipe recipe) {
         return recipeService.setRecipe(recipe);  // Köllum á service layer til að save-a recipe
     }
+
 }
