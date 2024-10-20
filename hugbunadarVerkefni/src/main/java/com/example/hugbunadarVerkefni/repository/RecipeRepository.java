@@ -8,12 +8,12 @@ import java.util.List;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    // Hér þarf að klára þessar aðferðir
+    // Hér þarf að klára þessar aðferðir?
 
     List<Recipe> searchByName(String name);
 
 
-    List<Recipe> likeARecipe(Long recipeId, Long userId); // Hér er áætlað að við þurfum userId til að
+    List<Recipe> likeARecipe(Long recipeId, Long userId); // Hér er áætlað að við þurfum userId til að like-a
 
 
     void editRecipe(Recipe recipe);

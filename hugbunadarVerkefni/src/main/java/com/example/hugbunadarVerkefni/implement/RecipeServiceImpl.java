@@ -21,7 +21,21 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe searchRecipeByID(Long recipeId) {
         return recipeRepository.findById(recipeId).orElse(null);
-        // return recipeRepository.findById(recipeId).orElse(null); Getum notað þetta í staðinn ef það er eitthvað vesen
+    }
+
+    @Override
+    public List<Recipe> search() {
+        return recipeRepository.findAll(); // Or any custom logic for searching
+    }
+
+    @Override
+    public Recipe getRecipe(Long recipeId) { // Implement the getRecipe method
+        return recipeRepository.findById(recipeId).orElse(null);
+    }
+
+    @Override
+    public Recipe setRecipe(Recipe recipe) {  // Implement the setRecipe method
+        return recipeRepository.save(recipe);  // Assuming save() will create or update the recipe
     }
 
     @Override
@@ -31,9 +45,18 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public List<Recipe> likeARecipe(Long recipeId, Long userId) {
-        // Hér vantar að klára að like-a t.d. að setja counter og skila lista af liked recipes.
-        return recipeRepository.likeARecipe(recipeId, userId);
+        // Fetch the recipe from the repository
+        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+        if (recipe != null) {
+            // Increment the like count
+            recipe.setLikeCount(recipe.getLikeCount() + 1);
+            // Save the updated recipe back to the repository
+            recipeRepository.save(recipe);
+        }
+        // Return the updated list of liked recipes (if needed)
+        return recipeRepository.findAll(); // Adjust this as necessary for your use case
     }
+
 
     @Override
     public void editRecipe(Recipe recipe) {
@@ -105,4 +128,3 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.searchByIngredient(ingredient);
     }
 }
-

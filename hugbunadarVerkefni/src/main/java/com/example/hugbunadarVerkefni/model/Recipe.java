@@ -13,10 +13,11 @@ public class Recipe {
     private User user;
     private int recipeID;
     private List<String> ingredients;
-    private Macros macros; // Þurfum að gera macros klasa
+    private Macros macros;
     private Date cookTime;
-    private List<Comment> comments; // Þurfum að gera comment klasa
+    private List<Comment> comments;
     private boolean privatePost;
+    private int likeCount; // Bætti þessu við
 
     // Getterar og setterar
     public String getName() {
@@ -81,5 +82,13 @@ public class Recipe {
 
     public void setPrivatePost(boolean privatePost) {
         this.privatePost = privatePost;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 }
