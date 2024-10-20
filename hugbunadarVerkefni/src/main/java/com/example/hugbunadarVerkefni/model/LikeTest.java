@@ -1,15 +1,17 @@
 package com.example.hugbunadarVerkefni.model;
 
 import com.example.hugbunadarVerkefni.implement.RecipeServiceImpl;
+import com.example.hugbunadarVerkefni.repository.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-public class MockupRunner {
-    // til þess að athuga virkni skipana tengd recipe.
+public class LikeTest {
 
-    /*private static RecipeRepository mockRecipeRepository = new RecipeRepository() {
+    // Mock implementation of RecipeRepository
+    private static RecipeRepository mockRecipeRepository = new RecipeRepository() {
         private List<Recipe> recipes = new ArrayList<>();
 
         @Override
@@ -94,6 +96,11 @@ public class MockupRunner {
         }
 
         @Override
+        public void createRecipe(Recipe recipe) {
+            recipes.add(recipe); // Adding to the mock repository
+        }
+
+        @Override
         public List<Recipe> sortRecipesByDate() {
             return null; // Placeholder implementation
         }
@@ -104,79 +111,58 @@ public class MockupRunner {
         }
 
         @Override
-        public void createRecipe(Recipe recipe) { // Implement createRecipe method
-            recipes.add(recipe);
-        }
-
-        @Override
         public Recipe searchRecipeByID(Long recipeId) {
             return recipes.stream()
                     .filter(recipe -> recipe.getRecipeID() == recipeId)
                     .findFirst()
-                    .orElse(null);
+                    .orElse(null); // Return the recipe if found, otherwise null
         }
     };
 
-     */
-
-
     public static void main(String[] args) {
-        // Þetta er testrunner fyrir recipe
-
+        // Create an instance of RecipeServiceImpl with the mock repository
         RecipeServiceImpl recipeService = new RecipeServiceImpl(mockRecipeRepository);
 
-        // Gerum recipe
+        // Create a new recipe
         Recipe recipe = new Recipe();
-
         recipe.setName("Chocolate Cake");
-        User user = new User("lilja", "lilja@email.is");
-        recipe.setUser(user);
-        recipe.setRecipeID(1);
+        recipe.setRecipeID(1);  // Set the recipe ID
 
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("Flour");
-        ingredients.add("Sugar");
-        ingredients.add("Cocoa powder");
-        recipe.setIngredients(ingredients);
+        // Add user, ingredients, macros, comments, and other attributes
+        User user1 = new User("Lilja", "lilja@email.is");
+        User user2 = new User("Gilli", "gilli@email.is");
 
-        // Búum til macro
+        // Create macros
         Macros macros = new Macros();
         macros.setCalories(250);
         macros.setFat(10.5f);
         macros.setCarbohydrates(35.0f);
         macros.setProtein(5.0f);
         recipe.setMacros(macros);
-
         recipe.setCookTime(new Date());
-
-        List<Comment> comments = new ArrayList<>();
-        recipe.setComments(comments);
-
+        recipe.setUser(user1);
+        recipe.setIngredients(new ArrayList<>(List.of("Flour", "Sugar", "Cocoa powder")));
+        recipe.setComments(new ArrayList<>());
         recipe.setPrivatePost(false);
 
-        // Save recipe
+        // Save the recipe
         recipeService.setRecipe(recipe);
 
-        // Testing the getters
-        // System.out.println("Recipe Name: " + recipe.getName());
-        // System.out.println("User: " + recipe.getUser());
-        System.out.println("Recipe ID: " + recipe.getRecipeID());
-        // System.out.println("Ingredients: " + recipe.getIngredients());
-        // System.out.println("Macros: ");
-        // System.out.println("  Calories: " + recipe.getMacros().getCalories());
-        // System.out.println("  Fat: " + recipe.getMacros().getFat());
-        // System.out.println("  Carbohydrates: " + recipe.getMacros().getCarbohydrates());
-        // System.out.println("  Protein: " + recipe.getMacros().getProtein());
-        // System.out.println("Cook Time: " + recipe.getCookTime());
-        // System.out.println("Comments: " + recipe.getComments());
-        // System.out.println("Is Private Post: " + recipe.isPrivatePost());
+        // User 1 likes the recipe
+        List<Long> likesFromUser1 = recipeService.likeARecipe((long) recipe.getRecipeID(), 1L);
+        System.out.println("User 1 liked the recipe. Current likes: " + likesFromUser1.size()); // Should be 1
 
-        /*
+        // User 2 likes the recipe
+        List<Long> likesFromUser2 = recipeService.likeARecipe((long) recipe.getRecipeID(), 2L);
+        System.out.println("User 2 liked the recipe. Current likes: " + likesFromUser2.size()); // Should be 2
+
+        // User 1 tries to like the recipe again
+        List<Long> likesFromUser1Again = recipeService.likeARecipe((long) recipe.getRecipeID(), 1L);
+        System.out.println("User 1 tried to like the recipe again. Current likes: " + likesFromUser1Again.size()); // Should still be 2
+
+        // Retrieve and print the recipe details
         Recipe retrievedRecipe = recipeService.getRecipe((long) recipe.getRecipeID());
-        System.out.println("Recipe gotten by ID: " + (retrievedRecipe != null ? retrievedRecipe.getName() : "Not found"));
-        */
-
+        System.out.println("Recipe Name: " + retrievedRecipe.getName());
+        System.out.println("Total Likes: " + retrievedRecipe.getLikeCount());
     }
-
-
 }

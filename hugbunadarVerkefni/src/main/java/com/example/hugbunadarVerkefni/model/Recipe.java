@@ -2,6 +2,7 @@ package com.example.hugbunadarVerkefni.model;
 
 import jakarta.persistence.Entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Recipe {
     private Date cookTime;
     private List<Comment> comments;
     private boolean privatePost;
-    private int likeCount; // Bætti þessu við
+    private List<Long> likedUserIDs = new ArrayList<>(); // Bætti þessu við
 
     // Getterar og setterar
     public String getName() {
@@ -84,11 +85,15 @@ public class Recipe {
         this.privatePost = privatePost;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public List<Long> getLikedUserIDs() {
+        return likedUserIDs;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void setLikedUserIDs(List<Long> likedUserIDs) {
+        this.likedUserIDs = likedUserIDs;
+    }
+
+    public int getLikeCount() {
+        return likedUserIDs.size(); // Skilar stærð listans (sem er þá fjöldi like-a)
     }
 }
