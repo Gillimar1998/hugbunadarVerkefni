@@ -16,7 +16,7 @@ public interface RecipeService {
 
     List<Recipe> searchByName(String name);
 
-    List<Recipe> likeARecipe(Long recipeId, Long userId);
+    List<Long> likeARecipe(Long recipeId, Long userId);
 
     void editRecipe(Recipe recipe);
 

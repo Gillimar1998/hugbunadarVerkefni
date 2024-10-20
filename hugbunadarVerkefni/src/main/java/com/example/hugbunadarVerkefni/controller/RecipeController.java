@@ -20,9 +20,9 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/search")  // HTTP GET method
-    public List<Recipe> search() {
-        return recipeService.search();  // Köllum á service layer
+    @GetMapping("/search") // HTTP GET method
+    public List<Recipe> search(@RequestParam String name) { // Accepts a query parameter for the recipe name
+        return recipeService.searchByName(name);  // Call to the service layer
     }
 
 
@@ -37,4 +37,8 @@ public class RecipeController {
         return recipeService.setRecipe(recipe);  // Köllum á service layer til að save-a recipe
     }
 
+    @PostMapping("/{id}/like")
+    public List<Long> likeRecipe(@PathVariable Long id, @RequestParam Long userId) {
+        return recipeService.likeARecipe(id, userId);
+    }
 }

@@ -6,10 +6,12 @@ import com.example.hugbunadarVerkefni.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
+    // hér þarf að laga aðferðir til að þær virki almennilega
 
     private final RecipeRepository recipeRepository;
 
@@ -25,36 +27,44 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public List<Recipe> search() {
-        return recipeRepository.findAll(); // Or any custom logic for searching
+        return recipeRepository.findAll(); // Hér getum við breytt þessu ef þetta virkar ekki
     }
 
     @Override
-    public Recipe getRecipe(Long recipeId) { // Implement the getRecipe method
+    public Recipe getRecipe(Long recipeId) {
         return recipeRepository.findById(recipeId).orElse(null);
     }
 
     @Override
-    public Recipe setRecipe(Recipe recipe) {  // Implement the setRecipe method
-        return recipeRepository.save(recipe);  // Assuming save() will create or update the recipe
+    public Recipe setRecipe(Recipe recipe) {
+        return recipeRepository.save(recipe);
     }
 
     @Override
     public List<Recipe> searchByName(String name) {
-        return recipeRepository.searchByName(name);
+        return recipeRepository.findAll().stream()
+                .filter(recipe -> recipe.getName().toLowerCase().contains(name.toLowerCase()))
+                .toList(); // Java 16+; otherwise, use a for loop to collect results
     }
 
     @Override
-    public List<Recipe> likeARecipe(Long recipeId, Long userId) {
-        // Fetch the recipe from the repository
+    public List<Long> likeARecipe(Long recipeId, Long userId) {
+        // Náum í recipe úr repository
         Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+
         if (recipe != null) {
-            // Increment the like count
-            recipe.setLikeCount(recipe.getLikeCount() + 1);
-            // Save the updated recipe back to the repository
-            recipeRepository.save(recipe);
+            if (!recipe.getLikedUserIDs().contains(userId)) {
+                // Setur UserID í lista af users sem like-a
+                recipe.getLikedUserIDs().add(userId);
+                recipeRepository.save(recipe);
+            } else {
+                // Soldið Error message sem segir okkur ef userinn eru búinn að likea núþegar
+                System.out.println("User has already liked this recipe.");
+            }
         }
-        // Return the updated list of liked recipes (if needed)
-        return recipeRepository.findAll(); // Adjust this as necessary for your use case
+
+        // Skilar lista af userIDs sem hafa like-að recipe-ið
+        return recipe != null ? recipe.getLikedUserIDs() : new ArrayList<>();
     }
 
 
