@@ -1,6 +1,5 @@
 package com.example.hugbunadarVerkefni.model;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,13 +12,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;   // Changed to uppercase String
-    private String email;  // Changed to uppercase String
+    private String name;
+    private String email;
+    private String password;
 
-    // Constructor (removed 'int id' since it's auto-generated)
-    public User(String name, String email) {
+    // Default constructor required by JPA
+    public User() {}
+
+    // Constructor with parameters
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
+        this.password = password;  // Make sure this is hashed before storing
     }
 
     // Getters and setters
@@ -39,11 +43,24 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;  // Make sure to hash before setting
+    }
+
+
     public Long getId() {
         return id;
     }
 
+    // þarf setId?
+/*
     public void setId(Long id) {
         this.id = id;
     }
+
+ */
 }
